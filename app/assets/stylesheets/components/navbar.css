@@ -1,3 +1,67 @@
-.navbar {
-  color: red;
+.title {
+  color: white ;
+}
+
+.container {
+width: 100%;
+min-width: 100vh;
+}
+
+.user_img {
+  width: 100%;
+  height: auto;
+}
+
+.sidebar {
+  background-color: black;
+  width: 256px;
+  height: 100vh;
+  padding: 20px;
+  flex-direction: column;
+  display: flex;
+  border-radius: 30px;
+}
+
+.sidebar .head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid #f6f6f6;
+  padding-bottom: 20px;
+}
+
+
+.user_img {
+  display: flex;
+  overflow: hidden;
+}
+
+.user_img img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 2px solid #94f956;
+}
+
+.user-details .name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #757575 !important;
+}
+
+
+.menu {
+  margin-top: 30px;
+}
+
+.navigation {
+  display: flex;
+  color: white;
+  margin-top: 5px;
+}
+
+.icon {
+  color: #94f956;
+  margin-right: 10px;
 }
