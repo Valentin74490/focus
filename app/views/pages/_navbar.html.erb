@@ -1,4 +1,4 @@
-<div class="container">
+<div>
   <div class="sidebar">
     <div class="head">
       <div class="user_img">
@@ -34,7 +34,7 @@
         </div>
         <div class="navigation">
           <i class="fa-solid fa-right-from-bracket icon"></i>
-          <p>Déconnexion</p>
+          <p><%= link_to "Me déconnecter", destroy_user_session_path, data: {turbo_method: :delete}, class:"grey" %></p>
         </div>
       </div>
     </div>

@@ -16,6 +16,7 @@
 body {
   background-color: #F4F2EE;
   display: flex;
+  justify-content: center;
 }
 
 * {

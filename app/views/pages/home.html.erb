@@ -1,1 +1,20 @@
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, blanditiis aliquid beatae velit voluptatum quod voluptates magni assumenda numquam minima veniam amet laborum aperiam quo. Natus blanditiis tenetur deserunt et delectus saepe ipsa quae mollitia rerum eum, repellendus, esse, nulla eos? Vitae cupiditate blanditiis similique ut sapiente mollitia dolorem illo.
+
+<h2 class="title-home">Mes projets en cours</h2>
+
+<div class="projects flex-wrap">
+  <% @projects.each do |project| %>
+    <%= link_to project_path(project), class: "relative flex flex-col items-center bg-white border border-[#94F956] rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-[#94F956] dark:bg-gray-800 dark:hover:bg-gray-700" do %>
+      <!-- Étiquette "Tâche" en haut à gauche -->
+      <div class="absolute top-0 left-0 bg-[#94F956] text-white text-xs font-bold px-2 py-1 rounded-tr-lg rounded-bl-lg">
+        Projet
+      </div>
+      <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="https://eeat-haccp.io/wp-content/uploads/2023/12/application_haccp_imprimante_enregistreur_frigo.webp" alt="">
+      <div class="flex flex-col justify-between p-4 leading-normal">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><%= project.name %></h5>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><%= project.description %></p>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+</div>
