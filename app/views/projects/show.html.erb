@@ -40,8 +40,16 @@
                   <td class="px-6 py-4">
                       <p><%= task.description %></p>
                   </td>
-                  <td class="px-6 py-4">
-                      <p><%= task.status %></p>
+                  <td>
+                      <p class="px-6 py-4"><%= case task.status
+                        when 'todo'
+                         "A faire"
+                         when 'in_progess'
+                         "En progression"
+                        else
+                        "Terminé José 🚀"
+                        end %>
+                      </p>
                   </td>
                   <td class="px-6 py-4">
                       <p><%= task.time_task %></p>
