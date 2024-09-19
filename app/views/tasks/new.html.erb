@@ -1,0 +1,23 @@
+<h1>Créer une nouvelle tâche pour <%= @project.name %></h1>
+
+<%= simple_form_for([@project, @task]) do |f| %>
+  <div>
+    <%= f.input :name, label: "Nom de la tâche" %>
+  </div>
+
+  <div>
+    <%= f.input :description, label: "Description" %>
+  </div>
+
+  <div>
+    <%= f.input :status, collection: Task.statuses.keys.map { |k| [k.humanize, k] }, label: "Statut" %>
+  </div>
+
+  <div>
+    <%= f.input :time_task, label: "Date de la tâche", as: :datetime %>
+  </div>
+
+  <div>
+    <%= f.submit "Créer la tâche", class: "btn btn-primary" %>
+  </div>
+<% end %>

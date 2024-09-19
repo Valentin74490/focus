@@ -1,6 +1,7 @@
 <div class="project-title pb-6">
-  <h1 class="title-project pr-5 "><%= @project.name%></h1>
-  <button type="button" class="text-black text-[25px] bg-[#94F956] hover:bg-[#94F956] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 pl-4">Créer une nouvelle tâche</button>
+  <h1 class="title-project pr-5 "><%= @project.name %></h1>
+
+  <%= link_to "Créer une nouvelle tâche", new_project_task_path(@project), class: "text-black text-[25px] bg-[#94F956] hover:bg-[#94F956] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 pl-4" %>
 </div>
 
 
@@ -11,10 +12,8 @@
 
 
 
-
 <div class="task-index pt-8 w-99do">
   <div class="relative overflow-x-auto">
-  <%= @t %>
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
@@ -33,48 +32,22 @@
               </tr>
           </thead>
           <tbody>
+            <% @tasks.each do |task| %>
               <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      nom de la tache
+                      <p><%= task.name %></p>
                   </th>
                   <td class="px-6 py-4">
-                      Description de la tâche
+                      <p><%= task.description %></p>
                   </td>
                   <td class="px-6 py-4">
-                      En cours
+                      <p><%= task.status %></p>
                   </td>
                   <td class="px-6 py-4">
-                      $2999
+                      <p><%= task.time_task %></p>
                   </td>
               </tr>
-              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      Microsoft Surface Pro
-                  </th>
-                  <td class="px-6 py-4">
-                      White
-                  </td>
-                  <td class="px-6 py-4">
-                      Laptop PC
-                  </td>
-                  <td class="px-6 py-4">
-                      $1999
-                  </td>
-              </tr>
-              <tr class="bg-white dark:bg-gray-800">
-                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      Magic Mouse 2
-                  </th>
-                  <td class="px-6 py-4">
-                      Black
-                  </td>
-                  <td class="px-6 py-4">
-                      Accessories
-                  </td>
-                  <td class="px-6 py-4">
-                      $99
-                  </td>
-              </tr>
+              <% end %>
           </tbody>
       </table>
   </div>
