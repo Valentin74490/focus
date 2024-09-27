@@ -5,7 +5,12 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find(params[:id])
-    @tasks = @project.tasks
+    @status = params[:status]
+    if @status
+    @tasks = @project.tasks.where(status: @status )
+    else
+      @tasks = @project.tasks
+    end
   end
 
 end

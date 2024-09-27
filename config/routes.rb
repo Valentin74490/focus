@@ -10,6 +10,6 @@ Rails.application.routes.draw do
    root "pages#home"
 
    resources :projects do
-    resources :tasks , only: [:new, :create, :edit, :update, :destroy]
+    resources :tasks , only: [:new, :create, :edit, :update, :destroy, :show]
    end
 end

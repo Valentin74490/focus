@@ -5,10 +5,18 @@
 </div>
 
 
-<div class="project-objectif rounded pt-2">
-  <h2 class="font-bold pb-3 ml-3" > Description du projet: </h2>
-  <div class="ml-3 pb-3"><%= @project.description %></div>
+
+<div id="popup" style=" background-color: white; padding: 20px; transition: margin-right 40s ease-in-out 1s;">
+  <p>test de dive affiché </p>
+  <button id="close-popup"><i class="fa-solid fa-plus"></i></button>
 </div>
+
+
+<%= link_to "Tous", project_path(@project)%>
+<%= link_to  "A faire", project_path(@project, status: "todo"), class: @status=="todo"? "bg-blue-100 text-white-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300" :""%>
+<%= link_to  "En progression", project_path(@project, status: "todo"), class: @status=="todo"? "bg-blue-100 text-white-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300" :""%>
+<%= link_to  "Terminé", project_path(@project, status: "todo"), class: @status=="todo"? "bg-blue-100 text-white-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300" :""%>
+
 
 
 
@@ -23,7 +31,7 @@
                   <th scope="col" class="px-6 py-3">
                       Description
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" class="px-6 py-3 text-center">
                       Statut
                   </th>
                   <th scope="col" class="px-6 py-3">
@@ -32,24 +40,31 @@
               </tr>
           </thead>
           <tbody>
+          <% if params[:focused_task]  %>
+          <div>bonjour</div>
+          <p><%= link_to "fermer", project_path(@project, focused_task: nil) %></p>
+          <% end %>
+
             <% @tasks.each do |task| %>
-              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 transition-all hover:bg-gray-200 hover:border" id="task">
                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      <p><%= task.name %></p>
+                      <p><%= link_to task.name, project_path(@project, focused_task: task) %></p>
                   </th>
-                  <td class="px-6 py-4">
+                  <td class="px-6 py-4 ">
                       <p><%= task.description %></p>
                   </td>
-                  <td>
-                      <p class="px-6 py-4"><%= case task.status
-                        when 'todo'
-                         "A faire"
-                         when 'in_progess'
-                         "En progression"
-                        else
-                        "Terminé José 🚀"
-                        end %>
-                      </p>
+                  <td class="px-6 py-4 flex justify-center">
+                    <% case task.status %>
+                    <% when 'todo'%>
+                        <p class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                          A faire
+                        </p>
+                    <% when 'in_progess'%>
+                          <p class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">En progression</p>
+                    <% else %>
+                          <p class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">"Terminé José 🚀"</p>
+                    <% end %>
                   </td>
                   <td class="px-6 py-4">
                       <p><%= task.time_task %></p>
@@ -60,3 +75,26 @@
       </table>
   </div>
 </div>
+
+
+
+
+
+
+<script>
+  const tasks = document.querySelectorAll('#task')
+  const popup = document.getElementById('popup');
+  const closePopupButton = document.getElementById('close-popup');
+  setTimeout(() => {
+    console.log('test');
+    popup.style.display = 'block';
+  }, 1000);
+
+
+
+
+  closePopupButton.addEventListener('click', () => {
+  // Cache le popup
+  popup.style.display = 'none';
+});
+</script>

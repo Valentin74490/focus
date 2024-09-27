@@ -1,10 +1,13 @@
 class TasksController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @tasks = Task.all
   end
 
   def show
-    @task = Task.find(params[:id])
+    @project
+    @task
   end
 
   def new
@@ -24,6 +27,14 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def set_project
+    @project = Project.find(params[:project_id])
+  end
+
+  def set_task
+    @task = @project.tasks.find(params[:id])
+  end
 
   def task_params
     params.require(:task).permit(:name, :description, :status, :time_task, :user_id)
