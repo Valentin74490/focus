@@ -26,6 +26,22 @@ class TasksController < ApplicationController
       end
   end
 
+  def edit
+    @project = Project.find(params[:project_id])
+    @task = @project.tasks.find(params[:id])
+  end
+
+  def update
+    @project = Project.find(params[:project_id])
+    @task = @project.tasks.find(params[:id])
+
+    if @task.update(task_params)
+      redirect_to project_path(@project), notice: "La tâche a été mise à jour avec succès."
+    else
+      render :edit
+    end
+  end
+
   private
 
   def set_project

@@ -6,16 +6,17 @@
 
 
 
-<div id="popup" style=" background-color: white; padding: 20px; transition: margin-right 40s ease-in-out 1s;">
-  <p>test de dive affiché </p>
-  <button id="close-popup"><i class="fa-solid fa-plus"></i></button>
-</div>
 
 
 <%= link_to "Tous", project_path(@project)%>
 <%= link_to  "A faire", project_path(@project, status: "todo"), class: @status=="todo"? "bg-blue-100 text-white-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300" :""%>
-<%= link_to  "En progression", project_path(@project, status: "todo"), class: @status=="todo"? "bg-blue-100 text-white-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300" :""%>
-<%= link_to  "Terminé", project_path(@project, status: "todo"), class: @status=="todo"? "bg-blue-100 text-white-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300" :""%>
+<%= link_to  "En progression", project_path(@project, status: "in_progess"), class: @status=="todo"? "bg-blue-100 text-white-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300" :""%>
+<%= link_to  "Terminé", project_path(@project, status: "done"), class: @status=="todo"? "bg-blue-100 text-white-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300" :""%>
+
+
+
+
+
 
 
 
@@ -35,21 +36,33 @@
                       Statut
                   </th>
                   <th scope="col" class="px-6 py-3">
-                      Timer
+                      Echéance
                   </th>
               </tr>
           </thead>
           <tbody>
-          <% if params[:focused_task]  %>
-          <div>bonjour</div>
-          <p><%= link_to "fermer", project_path(@project, focused_task: nil) %></p>
-          <% end %>
 
+          <% if params[:focused_task] %>
+          <div class="focused_task pb-10 mb-10">
+            <div class="content-description">
+              <div class="font-bold text-lg	"><%=  @focused_task.name  %></div>
+              <div class="focused_task_description">
+              <h2 class="mb-1">Description</h2>
+              <div class="description-task border rounded p-2 ml-2 mr-2 text-slate-500	">
+                <%=@focused_task.description%>
+               <p><%= link_to "Modifier la tâche", edit_project_task_path(@project, @focused_task), class: "text-blue-500 hover:underline" %></p>
+
+              </div>
+              </div>
+                <p><%= link_to "fermer", project_path(@project, focused_task: nil) %></p>
+                <% end %>
+            </div>
+          </div>
             <% @tasks.each do |task| %>
 
               <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 transition-all hover:bg-gray-200 hover:border" id="task">
                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      <p><%= link_to task.name, project_path(@project, focused_task: task) %></p>
+                      <p><%= link_to task.name, project_path(@project, focused_task: task.id) %></p>
                   </th>
                   <td class="px-6 py-4 ">
                       <p><%= task.description %></p>
@@ -67,7 +80,7 @@
                     <% end %>
                   </td>
                   <td class="px-6 py-4">
-                      <p><%= task.time_task %></p>
+                      <p><%= task.time_task.strftime("%d %b %Y à %Hh%M") if task.time_task.present? %></p>
                   </td>
               </tr>
               <% end %>

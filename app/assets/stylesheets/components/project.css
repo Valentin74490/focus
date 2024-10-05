@@ -18,3 +18,8 @@
 .popup-clicked {
   display: block;
 }
+
+
+.focused_task {
+  background-color: white;
+}

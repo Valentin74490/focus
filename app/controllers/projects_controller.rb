@@ -11,6 +11,10 @@ class ProjectsController < ApplicationController
     else
       @tasks = @project.tasks
     end
+
+    if params[:focused_task]
+      @focused_task = @project.tasks.find_by(id: params[:focused_task])
+    end
   end
 
 end
