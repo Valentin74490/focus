@@ -36,11 +36,18 @@ class TasksController < ApplicationController
     @task = @project.tasks.find(params[:id])
 
     if @task.update(task_params)
-      redirect_to project_path(@project), notice: "La tâche a été mise à jour avec succès."
+      respond_to do |format|
+        format.html { redirect_to project_path(@project), notice: "Tâche mise à jour avec succès." }
+        format.js   # Pour gérer la réponse via AJAX
+      end
     else
-      render :edit
+      respond_to do |format|
+        format.html { render :edit }
+        format.js   # Pour afficher les erreurs via AJAX
+      end
     end
   end
+
 
   private
 

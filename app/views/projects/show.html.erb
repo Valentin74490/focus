@@ -1,7 +1,7 @@
-<div class="project-title pb-6 flex items-center">
-  <h1 class="title-project pr-5 "><%= @project.name %></h1>
+<div class="project-title pb-6 flex items-center bg-black">
+  <h1 class="title-project pr-5 p-2"><%= @project.name %></h1>
   <div class="mt-2">
-  <%= link_to "Créer une nouvelle tâche", new_project_task_path(@project), class: "text-black text-[30px] bg-[#94F956] hover:bg-[#94F956] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 me-2  focus:outline-none dark:focus:ring-[#94f956]pl-4 " %>
+  <%= link_to "Créer une nouvelle tâche", new_project_task_path(@project), class: "text-black text-[16px] bg-[#94F956] hover:bg-[#94F956] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-2 me-2  focus:outline-none dark:focus:ring-[#94f956]pl-4 " %>
 </div>
 
 </div>
@@ -19,22 +19,41 @@
 
 
 <% if params[:focused_task] %>
-  <div id="popupfocus" class="focused_task p-3 pb-10 mb-10  absolute h-full w-[50%] bg-white z-50 right-0 top-0  translate-x-[600px] transition ease-in-out  duration-300">
+  <div id="popupfocus" class="focused_task p-3 pb-10 mb-10 absolute h-full w-[50%] bg-white z-50 right-0 top-0 translate-x-[600px] transition ease-in-out duration-300">
     <div class="content-description">
-      <div class="font-bold text-lg	mb-4 text-[50px]"> <%=  @focused_task.name  %></div>
-      <div class="text-lg flex flex-row"><h2 class="font-bold">Echéance : </h2><%=  @focused_task.time_task  %></div>
-      <div class="flex flex-row"><h2 class="font-bold">Statut: </h2> <p> <%=  @focused_task.status %></p></div>
+      <div class="font-bold text-lg mb-4 text-[50px]"> <%= @focused_task.name %></div>
+      <div class="text-lg flex flex-row">
+        <h2 class="font-bold">Echéance : </h2>
+        <%= @focused_task.time_task %>
+      </div>
+      <div class="flex flex-row">
+        <h2 class="font-bold">Statut: </h2>
+        <p><%= @focused_task.status %></p>
+      </div>
+
       <div class="focused_task_description">
-      <h2 class="mb-1">Description</h2>
-      <div class="description-task border rounded p-2 ml-2 mr-2 text-slate-500 mb-5	">
-        <%=@focused_task.description%>
-        <p><%= link_to "Modifier la tâche", edit_project_task_path(@project, @focused_task), class: "text-blue-500 hover:underline" %></p>
+        <h2 class="mb-1">Description</h2>
+        <div class="description-task border rounded p-2 ml-2 mr-2 text-slate-500 mb-5" id="description">
+          <%= form_with model: [@project, @focused_task], remote: true, html: { id: "edit-description-form" } do |f| %>
+            <div id="description-text">
+              <p><%= @focused_task.description %></p>
+              <a href="#" id="edit-description" class="text-black hover:bg-[#94F956]">Modifier la description</a>
+            </div>
+            <div id="description-input" style="display:none;">
+              <%= f.text_area :description, class: "w-full p-2 border rounded border-co focus:border-[#94F956]" %>
+              <%= f.submit "Sauvegarder", class: "mt-2 text-white bg-[#94F956] hover:bg-[#94F956] font-medium rounded-lg px-4 py-2" %>
+            </div>
+          <% end %>
+        </div>
       </div>
-      </div>
-      <button id="closepopup" type="button" class="text-white bg-[#94f956] hover:bg-[#94f956] focus:ring-4 focus:[#94f956] font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:[#94f956] dark:hover:[#94f956] focus:outline-none dark:focus:[#94f956]"><i class="fa-duotone fa-solid fa-rectangle-xmark"></i></button>
+
+      <button id="closepopup" type="button" class="text-white bg-[#94f956] hover:bg-[#94f956] focus:ring-4 focus:[#94f956] font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2">
+        <i class="fa-solid fa-rectangle-xmark"></i>
+      </button>
     </div>
   </div>
-  <% end %>
+<% end %>
+
 
 
 
