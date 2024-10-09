@@ -25,3 +25,39 @@ body {
   box-sizing: border-box;
   margin: 0;
 }
+
+
+/* Style pour le pop-up (masqué par défaut) */
+.popup {
+  display: none; /* Caché par défaut */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Background sombre pour l'effet */
+}
+
+/* Contenu du pop-up */
+.popup-content {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Taille du pop-up */
+}
+
+/* Bouton pour fermer le pop-up */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover, .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

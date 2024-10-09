@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
     @status = params[:status]
     if @status
-    @tasks = @project.tasks.where(status: @status )
+    @tasks = @project.tasks.where(status: @status)
     else
       @tasks = @project.tasks
     end

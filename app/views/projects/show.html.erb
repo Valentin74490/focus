@@ -1,20 +1,40 @@
-<div class="project-title pb-6">
+<div class="project-title pb-6 flex items-center">
   <h1 class="title-project pr-5 "><%= @project.name %></h1>
+  <div class="mt-2">
+  <%= link_to "Créer une nouvelle tâche", new_project_task_path(@project), class: "text-black text-[30px] bg-[#94F956] hover:bg-[#94F956] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 me-2  focus:outline-none dark:focus:ring-[#94f956]pl-4 " %>
+</div>
 
-  <%= link_to "Créer une nouvelle tâche", new_project_task_path(@project), class: "text-black text-[25px] bg-[#94F956] hover:bg-[#94F956] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 pl-4" %>
 </div>
 
 
 
 
-
+<div class="mt-9">
 <%= link_to "Tous", project_path(@project)%>
 <%= link_to  "A faire", project_path(@project, status: "todo"), class: @status=="todo"? "bg-blue-100 text-white-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300" :""%>
 <%= link_to  "En progression", project_path(@project, status: "in_progess"), class: @status=="todo"? "bg-blue-100 text-white-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300" :""%>
 <%= link_to  "Terminé", project_path(@project, status: "done"), class: @status=="todo"? "bg-blue-100 text-white-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300" :""%>
+</div>
 
 
 
+<% if params[:focused_task] %>
+  <div id="popupfocus" class="focused_task p-3 pb-10 mb-10  absolute h-full w-[50%] bg-white z-50 right-0 top-0  translate-x-[600px] transition ease-in-out  duration-300">
+    <div class="content-description">
+      <div class="font-bold text-lg	mb-4 text-[50px]"> <%=  @focused_task.name  %></div>
+      <div class="text-lg flex flex-row"><h2 class="font-bold">Echéance : </h2><%=  @focused_task.time_task  %></div>
+      <div class="flex flex-row"><h2 class="font-bold">Statut: </h2> <p> <%=  @focused_task.status %></p></div>
+      <div class="focused_task_description">
+      <h2 class="mb-1">Description</h2>
+      <div class="description-task border rounded p-2 ml-2 mr-2 text-slate-500 mb-5	">
+        <%=@focused_task.description%>
+        <p><%= link_to "Modifier la tâche", edit_project_task_path(@project, @focused_task), class: "text-blue-500 hover:underline" %></p>
+      </div>
+      </div>
+      <button id="closepopup" type="button" class="text-white bg-[#94f956] hover:bg-[#94f956] focus:ring-4 focus:[#94f956] font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:[#94f956] dark:hover:[#94f956] focus:outline-none dark:focus:[#94f956]"><i class="fa-duotone fa-solid fa-rectangle-xmark"></i></button>
+    </div>
+  </div>
+  <% end %>
 
 
 
@@ -42,25 +62,10 @@
           </thead>
           <tbody>
 
-          <% if params[:focused_task] %>
-          <div class="focused_task pb-10 mb-10">
-            <div class="content-description">
-              <div class="font-bold text-lg	"><%=  @focused_task.name  %></div>
-              <div class="focused_task_description">
-              <h2 class="mb-1">Description</h2>
-              <div class="description-task border rounded p-2 ml-2 mr-2 text-slate-500	">
-                <%=@focused_task.description%>
-               <p><%= link_to "Modifier la tâche", edit_project_task_path(@project, @focused_task), class: "text-blue-500 hover:underline" %></p>
 
-              </div>
-              </div>
-                <p><%= link_to "fermer", project_path(@project, focused_task: nil) %></p>
-                <% end %>
-            </div>
-          </div>
             <% @tasks.each do |task| %>
 
-              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 transition-all hover:bg-gray-200 hover:border" id="task">
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 transition-all hover:bg-gray-200 hover:border ligne" >
                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       <p><%= link_to task.name, project_path(@project, focused_task: task.id) %></p>
                   </th>
@@ -88,26 +93,3 @@
       </table>
   </div>
 </div>
-
-
-
-
-
-
-<script>
-  const tasks = document.querySelectorAll('#task')
-  const popup = document.getElementById('popup');
-  const closePopupButton = document.getElementById('close-popup');
-  setTimeout(() => {
-    console.log('test');
-    popup.style.display = 'block';
-  }, 1000);
-
-
-
-
-  closePopupButton.addEventListener('click', () => {
-  // Cache le popup
-  popup.style.display = 'none';
-});
-</script>
