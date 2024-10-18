@@ -18,18 +18,72 @@
 
 
 
-<% if params[:focused_task] %>
-  <div id="popupfocus" class="focused_task p-3 pb-10 mb-10 absolute h-full w-[50%] bg-white z-50 right-0 top-0 translate-x-[600px] transition ease-in-out duration-300">
+
+<%= @dontanimate %>
+<% if @focused_task %>
+  <div id="popupfocus" class=" <% @dontanimate ? '' : 'duration-0 translate-x-[0px]' %> duration-300 translate-x-[600px] focused_task p-3 pb-10 mb-10 absolute h-full w-[50%] bg-white z-50 right-0 top-0  transition ease-in-out  border-l-2 border-[#94F956]">
     <div class="content-description">
-      <div class="font-bold text-lg mb-4 text-[50px]"> <%= @focused_task.name %></div>
+    <%= form_with model: [@project, @focused_task], html: { id: "edit-title-form" } do |f| %>
+      <div class="font-bold text-lg mb-4 text-[50px] inline-block hover:border-[#94F956] hover:border hover:p-2  hover:rounded" id="title-task"> <%= @focused_task.name %></div>
+      <div id="title-input" style="display:none">
+        <%= f.text_field :name, class: "w-full p-2 border rounded border-co focus:border-[#94F956]" %>
+      </div>
+
+      <% end %>
+      <%= form_with model: [@project, @focused_task], remote: true, html: { id: "edit-task-time" } do |f| %>
       <div class="text-lg flex flex-row">
-        <h2 class="font-bold">Echéance : </h2>
-        <%= @focused_task.time_task %>
+        <h2 class="font-bold mr-5">Echéance :</h2>
+           <% if @focused_task.time_task.present? %>
+        <p id="title-time" class="hover:border-[#94F956] hover:border hover:rounded p-"><i class="fa-regular fa-calendar" style="color:#94F956"></i> <%= @focused_task.time_task.strftime("%d %b %Y à %Hh%M") %></p>
+        <% else %>
+        <span id="title-time-nill" class="relative inline-block p-1 border border-[#94F956] rounded text-black overflow-hidden hover:text-white hover:shadow-black before:absolute before:left-0 before:-ml-2 before:h-48 before:w-48 before:origin-top-right before:-translate-x-full before:translate-y-12 before:-rotate-90 before:bg-[#94F956] before:transition-all before:duration-300 hover:before:-rotate-180">
+          <span class="relative z-10">Ajouter une échéance</span>
+        </span>
+      <% end %>
       </div>
-      <div class="flex flex-row">
-        <h2 class="font-bold">Statut: </h2>
-        <p><%= @focused_task.status %></p>
+      <div id="title-time-input" style="display:none;">
+        <%= f.datetime_field :time_task, class: "w-full p-2 border rounded border-co focus:border-[#94F956]" %>
       </div>
+      <% end %>
+
+
+      <div class="flex flex-row mt-4">
+        <h2 class="font-bold mr-2">Statut: </h2>
+      <div>
+        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-[#94F956] hover:bg-[#94F956] focus:ring-2 focus:outline-none focus:ring-[#94F956] font-bold rounded-lg text px-2 py-2 text-center inline-flex items-center dark:bg-[#94F956] dark:hover:bg-[#94F956] dark:focus:ring-[#94F956]" type="button">
+          <%= @focused_task.status %>
+          <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+          </svg>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+          <ul class="py-2 text-sm text-white" aria-labelledby="dropdownDefaultButton">
+            <!-- Statut "A faire" -->
+            <li>
+              <a href="#" class="block px-4 py-2 bg-red-900" id="statut-todo">
+                A faire
+              </a>
+            </li>
+            <!-- Statut "En progression" -->
+            <li>
+              <a href="#" class="block px-4 py-2 bg-yellow-500" id="statut-progress">
+                En progression
+              </a>
+            </li>
+            <!-- Statut "Terminé" -->
+            <li>
+              <a href="#" class="block px-4 py-2 bg-green-500" id="statut-finish">
+                Terminé
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      </div>
+
+
 
       <div class="focused_task_description">
         <h2 class="mb-1">Description</h2>
@@ -45,6 +99,7 @@
             </div>
           <% end %>
         </div>
+        <div>c'est ici qu'il y aura le compteur de</div>
       </div>
 
       <button id="closepopup" type="button" class="text-white bg-[#94f956] hover:bg-[#94f956] focus:ring-4 focus:[#94f956] font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2">
@@ -53,7 +108,6 @@
     </div>
   </div>
 <% end %>
-
 
 
 
@@ -79,36 +133,42 @@
                   </th>
               </tr>
           </thead>
-          <tbody>
+         <tbody>
+  <% @tasks.each do |task| %>
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 transition-all hover:bg-gray-200 hover:border ligne">
+      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        <%= link_to project_path(@project, focused_task: task.id), class: "no-underline text-gray-900 dark:text-white" do %>
+          <p><%= task.name %></p>
+        <% end %>
+      </th>
+      <td class="px-6 py-4">
+        <%= link_to project_path(@project, focused_task: task.id), class: "no-underline text-gray-900 dark:text-white" do %>
+          <p><%= task.description %></p>
+        <% end %>
+      </td>
+      <td class="px-6 py-4 flex justify-center">
+        <%= link_to project_path(@project, focused_task: task.id), class: "no-underline text-gray-900 dark:text-white" do %>
+          <% case task.status %>
+            <% when 'todo' %>
+              <p class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">A faire</p>
+            <% when 'in_progess' %>
+              <p class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">En progression</p>
+            <% else %>
+              <p class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Terminé</p>
+          <% end %>
+        <% end %>
+      </td>
+      <td class="px-6 py-4">
+        <%= link_to project_path(@project, focused_task: task.id), class: "no-underline text-gray-900 dark:text-white" do %>
+          <p><%= task.time_task.strftime("%d %b %Y à %Hh%M") if task.time_task.present? %></p>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <script src="https://unpkg.com/flowbite@1.5.0/dist/flowbite.js"></script>
 
+</tbody>
 
-            <% @tasks.each do |task| %>
-
-              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 transition-all hover:bg-gray-200 hover:border ligne" >
-                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      <p><%= link_to task.name, project_path(@project, focused_task: task.id) %></p>
-                  </th>
-                  <td class="px-6 py-4 ">
-                      <p><%= task.description %></p>
-                  </td>
-                  <td class="px-6 py-4 flex justify-center">
-                    <% case task.status %>
-                    <% when 'todo'%>
-                        <p class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
-                          A faire
-                        </p>
-                    <% when 'in_progess'%>
-                          <p class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">En progression</p>
-                    <% else %>
-                          <p class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">"Terminé José 🚀"</p>
-                    <% end %>
-                  </td>
-                  <td class="px-6 py-4">
-                      <p><%= task.time_task.strftime("%d %b %Y à %Hh%M") if task.time_task.present? %></p>
-                  </td>
-              </tr>
-              <% end %>
-          </tbody>
       </table>
   </div>
 </div>

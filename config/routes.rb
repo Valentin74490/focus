@@ -1,15 +1,23 @@
 Rails.application.routes.draw do
   devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health check route
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
-   root "pages#home"
+  # Root path
+  root "pages#home"
 
-   resources :projects do
-    resources :tasks , only: [:new, :create, :edit, :update, :destroy, :show]
-   end
+  # Nested routes for projects and tasks
+  resources :projects do
+    resources :tasks, only: [:new, :create, :edit, :update, :destroy, :show] do
+      # Custom routes for starting and stopping work on a task
+      member do
+        patch :start_work
+        patch :stop_work
+      end
+    end
+  end
 end
+
+#note pour sid
+#j'ai rajouté ces elements mais je dois revenir dessus pour comprendre (sur la partie membe do )

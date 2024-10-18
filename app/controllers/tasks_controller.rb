@@ -35,9 +35,13 @@ class TasksController < ApplicationController
     @project = Project.find(params[:project_id])
     @task = @project.tasks.find(params[:id])
 
+
+
+
     if @task.update(task_params)
+      @focused_task = @task
       respond_to do |format|
-        format.html { redirect_to project_path(@project), notice: "Tâche mise à jour avec succès." }
+        format.html { redirect_to project_path(@project, focused_task:@task.id, dontanimate:true), notice: "Tâche mise à jour avec succès." }
         format.js   # Pour gérer la réponse via AJAX
       end
     else
@@ -47,6 +51,21 @@ class TasksController < ApplicationController
       end
     end
   end
+
+  # def start_work
+  #   @task = Task.find(params[:id])
+  #   if @task.current_session_start.nil?
+  #     @task.update(current_session_start: Time.current)
+  #   end
+  #   redirect_to project_path(@task.project, focused_task: @task.id)
+  # end
+
+  # def stop_work
+  #   @task = Task.find(params[:id])
+  #   @task.stop_session
+  #   redirect_to project_path(@task.project, focused_task: @task.id)
+  # end
+
 
 
   private

@@ -14,6 +14,7 @@ class ProjectsController < ApplicationController
 
     if params[:focused_task]
       @focused_task = @project.tasks.find_by(id: params[:focused_task])
+      @dontanimate = params[:dontanimate]
     end
   end
 

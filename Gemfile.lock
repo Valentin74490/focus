@@ -109,6 +109,7 @@ GEM
     drb (2.2.1)
     error_highlight (0.6.0)
     erubi (1.13.0)
+    flatpickr (4.6.13.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.5)
@@ -280,6 +281,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   error_highlight (>= 0.4.0)
+  flatpickr
   importmap-rails
   jbuilder
   puma (>= 5.0)
